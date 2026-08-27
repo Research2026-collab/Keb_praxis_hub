@@ -70,7 +70,7 @@ textarea { min-height:70px; resize:vertical; }
 // Nach dem Deployment die exec-URL der Apps-Script-Web-App hier eintragen.
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxp9Q1tJAzkP1quxj5tYoyU63D6PFAvp-VD-36oQn5D2jXzVDBlm-sZyY8vWbmbwZgOBQ/exec';
 
-const MEHRFACHAUSWAHL_FELDER = ['Zielgruppe', 'Voraussetzungen'];
+const MEHRFACHAUSWAHL_FELDER = ['Zielgruppe', 'Voraussetzungen', 'Format'];
 let BEKANNTE_EINRICHTUNGEN = [];
 let WERTELISTEN = {};
 
@@ -143,7 +143,8 @@ function renderForm() {
     ${textField('n_url', 'URL', false, 'https://...')}
 
     <div class="form-section-title">Umsetzung</div>
-    ${selectField('n_format', 'Format', w['Format'], false)}
+    ${selectField('n_teilnahmeform', 'Teilnahmeform', w['Teilnahmeform'], false)}
+    ${checkGroup('n_format', 'Format', 'Mehrfachauswahl möglich', w['Format'])}
     ${textField('n_dauer', 'Dauer', false, 'z. B. 90 Minuten')}
     ${textField('n_gruppengroesse', 'Gruppengröße', false, 'z. B. 8–12 Personen')}
     ${selectField('n_aufwand', 'Aufwand', w['Aufwand'], false)}
@@ -214,7 +215,8 @@ function submitBeitrag() {
     'Sprachebene': document.getElementById('n_sprachebene').value,
     'Kostenrahmen für Nachnutzung': document.getElementById('n_kostenrahmen_nachnutzung').value,
     'URL': document.getElementById('n_url').value,
-    'Format': document.getElementById('n_format').value,
+    'Teilnahmeform': document.getElementById('n_teilnahmeform').value,
+    'Format': getChecked('n_format').join(', '),
     'Dauer': document.getElementById('n_dauer').value,
     'Gruppengröße': document.getElementById('n_gruppengroesse').value,
     'Aufwand': document.getElementById('n_aufwand').value,

@@ -100,6 +100,7 @@ body { font-family: -apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; 
     <div class="filter-more" id="moreFilters">
       <select id="f_zielgruppe" onchange="applyFilters()"><option value="">Zielgruppe: alle</option></select>
       <select id="f_materialformat" onchange="applyFilters()"><option value="">Materialformat: alle</option></select>
+      <select id="f_teilnahmeform" onchange="applyFilters()"><option value="">Teilnahmeform: alle</option></select>
       <select id="f_format" onchange="applyFilters()"><option value="">Format: alle</option></select>
       <select id="f_sprachebene" onchange="applyFilters()"><option value="">Sprachebene: alle</option></select>
       <select id="f_aufwand" onchange="applyFilters()"><option value="">Aufwand: alle</option></select>
@@ -154,6 +155,7 @@ function applyFilters() {
   const umsetzungsstand = document.getElementById('f_umsetzungsstand').value;
   const zielgruppe = document.getElementById('f_zielgruppe').value;
   const materialformat = document.getElementById('f_materialformat').value;
+  const teilnahmeform = document.getElementById('f_teilnahmeform').value;
   const format = document.getElementById('f_format').value;
   const sprachebene = document.getElementById('f_sprachebene').value;
   const aufwand = document.getElementById('f_aufwand').value;
@@ -168,7 +170,8 @@ function applyFilters() {
     if (hauptbereich && b['Hauptbereich'] !== hauptbereich) return false;
     if (umsetzungsstand && b['Umsetzungsstand'] !== umsetzungsstand) return false;
     if (materialformat && b['Materialformat'] !== materialformat) return false;
-    if (format && b['Format'] !== format) return false;
+    if (teilnahmeform && b['Teilnahmeform'] !== teilnahmeform) return false;
+    if (!matchesFilter(b['Format'], format)) return false;
     if (sprachebene && b['Sprachebene'] !== sprachebene) return false;
     if (aufwand && b['Aufwand'] !== aufwand) return false;
     if (kostenrahmenNachnutzung && b['Kostenrahmen für Nachnutzung'] !== kostenrahmenNachnutzung) return false;
@@ -247,7 +250,8 @@ function showDetail(idx) {
 
       <div class="form-section-title">Umsetzung</div>
       <div class="field-grid">
-        <div class="field-block"><label>Format</label><p>${esc(b['Format'] || '–')}</p></div>
+        <div class="field-block"><label>Teilnahmeform</label><p>${esc(b['Teilnahmeform'] || '–')}</p></div>
+        <div class="field-block"><label>Format</label><p>${esc(String(b['Format'] || '–').split(',').map(s => s.trim()).filter(Boolean).join(', '))}</p></div>
         <div class="field-block"><label>Dauer</label><p>${esc(b['Dauer'] || '–')}</p></div>
         <div class="field-block"><label>Gruppengröße</label><p>${esc(b['Gruppengröße'] || '–')}</p></div>
         <div class="field-block"><label>Aufwand</label><p>${esc(b['Aufwand'] || '–')}</p></div>
@@ -339,6 +343,7 @@ Promise.all([
   fillSelect('f_umsetzungsstand', wertelisten['Umsetzungsstand'], 'Alle Umsetzungsstände');
   fillSelect('f_zielgruppe', wertelisten['Zielgruppe'], 'Zielgruppe: alle');
   fillSelect('f_materialformat', wertelisten['Materialformat'], 'Materialformat: alle');
+  fillSelect('f_teilnahmeform', wertelisten['Teilnahmeform'], 'Teilnahmeform: alle');
   fillSelect('f_format', wertelisten['Format'], 'Format: alle');
   fillSelect('f_sprachebene', wertelisten['Sprachebene'], 'Sprachebene: alle');
   fillSelect('f_aufwand', wertelisten['Aufwand'], 'Aufwand: alle');
